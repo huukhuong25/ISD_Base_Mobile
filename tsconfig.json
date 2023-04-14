@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "useDefineForClassFields": true, // for mobx
+  "compilerOptions": {
+    "experimentalDecorators": true, // for mobx
+    "strict": true,
+    // Path alias config
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

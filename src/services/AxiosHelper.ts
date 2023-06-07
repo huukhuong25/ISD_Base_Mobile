@@ -3,7 +3,7 @@ import {ResponseModel} from 'src/models/ResponseModel';
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosError} from 'axios';
 import {appStore} from 'src/stores';
 import {Alert} from 'react-native';
-import {Constants} from 'src/utils';
+import {Constants, logger} from 'src/utils';
 
 class AxiosHelper {
   private axiosInstance: AxiosInstance;
@@ -54,7 +54,7 @@ class AxiosHelper {
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<ResponseModel<T> | null> {
-    console.log('calling...', url);
+    logger.log('calling...', url);
     try {
       appStore.setLoading(true);
       const response = await this.axiosInstance.get(url, config);
@@ -63,7 +63,7 @@ class AxiosHelper {
       this.handleError(error);
       return null;
     } finally {
-        appStore.setLoading(false);
+      appStore.setLoading(false);
     }
   }
 
@@ -73,7 +73,7 @@ class AxiosHelper {
     config?: AxiosRequestConfig,
   ): Promise<ResponseModel<T> | null> {
     try {
-      console.log('calling...', url);
+      logger.log('calling...', url, JSON.stringify(params, null, 2));
       appStore.setLoading(true);
       const response = await this.axiosInstance.post(url, params, config);
       return response.data as ResponseModel<T>;
@@ -81,7 +81,7 @@ class AxiosHelper {
       this.handleError(error);
       return null;
     } finally {
-        appStore.setLoading(false);
+      appStore.setLoading(false);
     }
   }
 
@@ -91,7 +91,7 @@ class AxiosHelper {
     config?: AxiosRequestConfig,
   ): Promise<ResponseModel<T> | null> {
     try {
-      console.log('calling...', url);
+      logger.log('calling...', url, JSON.stringify(params, null, 2));
       appStore.setLoading(true);
       const response = await this.axiosInstance.put(url, params, config);
       return response.data as ResponseModel<T>;
@@ -99,7 +99,7 @@ class AxiosHelper {
       this.handleError(error);
       return null;
     } finally {
-        appStore.setLoading(false);
+      appStore.setLoading(false);
     }
   }
 
@@ -108,7 +108,7 @@ class AxiosHelper {
     config?: AxiosRequestConfig,
   ): Promise<ResponseModel<T> | null> {
     try {
-      console.log('calling...', url);
+      logger.log('calling...', url);
       appStore.setLoading(true);
       const response = await this.axiosInstance.delete(url, config);
       return response.data as ResponseModel<T>;
@@ -116,18 +116,18 @@ class AxiosHelper {
       this.handleError(error);
       return null;
     } finally {
-        appStore.setLoading(false);
+      appStore.setLoading(false);
     }
   }
 
   private handleError(error: AxiosError) {
-    console.log(JSON.stringify(error));
+    logger.log(JSON.stringify(error));
 
     if (error.response) {
       const json: ResponseModel<any> = error.response
         .data as ResponseModel<any>;
       if (json) {
-        console.log(json);
+        logger.log(JSON.stringify(json));
         if (json.message) {
           Alert.alert('Thông báo', json.message);
         }

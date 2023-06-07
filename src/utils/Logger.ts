@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {getUniqueId, getDeviceName} from 'react-native-device-info';
 
 class Logger {
@@ -13,11 +14,11 @@ class Logger {
     });
   }
 
-  public log(message: string | string[]) {
+  public log(...message: (string | string[])[]) {
+    const now = moment(new Date()).format('HH:mm:ss');
     console.log('================================================');
-    console.log(`${this.deviceName} - ${this.uniqueId}`);
-    console.log('-------');
-
+    console.log(`${now} - ${this.deviceName} - ${this.uniqueId}`);
+    console.log('----------------------------');
     if (Array.isArray(message)) {
       message.forEach(msg => console.log(msg));
     } else {
